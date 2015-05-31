@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load crispy_forms_tags %}
+{% block title %}Modifivar Voto{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{% block header %}Modificar Voto da {{object.poll}}{% endblock %}</h1>
+            <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.media}}
+                {{ form|crispy }}
+                <div class="control-group">
+                  <div class="controls">
+                    <button type="submit" class="btn">Alterar Voto</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

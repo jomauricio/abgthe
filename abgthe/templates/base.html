@@ -1,0 +1,127 @@
+{% load staticfiles i18n avatar_tags %}<!DOCTYPE html>
+<html lang="en" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}ABGTHE{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    {% block css %}
+    <!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">-->
+
+    <!-- Your stuff: Third-party css libraries go here -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!-- This file store project specific CSS -->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    {% endblock %}
+    {% block extra_css %}{% endblock extra_css %}
+
+    {% block angular %}
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script> -->
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">ABGTHE</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">Sobre</a></li>
+        <li><a href="{% url 'estatuto' %}">Estatuto</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+              <li class="dropdown">
+                  <img src="{% avatar_url user 45 %}" alt="Imagens do usuario" class="img-rounded">&nbsp;<button class="btn btn-primary navbar-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" ria-expanded="true">
+                  {{request.user}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  {% if request.user.is_staff %}
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'admin:index' %}"><i class="fa fa-lock"></i>&nbsp;{% trans "Admin" %}</a></li>
+                  <li class="divider"></li>
+                  {% endif %}
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href=""><i class="fa fa-list-alt"></i>&nbsp;{% trans "Meu Perfil" %}</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i>&nbsp;{% trans "Sair" %}</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <a class="btn navbar-btn btn-success" href="{% url 'account_signup' %}" role="button">{% trans "Registre-se" %}</a>
+              <a class="btn navbar-btn btn-default" href="{% url 'account_login' %}" role="button">{% trans "Log In" %}</a>
+            {% endif %}
+         </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container">
+
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button></div>
+          {% endfor %}
+      {% endif %}
+
+      {% block content %}
+        <p>Use this document as a way to quick start any new project.</p>
+      {% endblock content %}
+
+    </div> <!-- /container -->
+
+    {% block modal %}{% endblock modal %}
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block javascript %}
+      <!-- Latest JQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+      <!-- Your stuff: Third-party javascript libraries go here -->
+
+      <!-- place project specific Javascript in this file -->
+      <script src="{% static 'js/project.js' %}"></script>
+    {% endblock javascript %}
+    {% block extra_javascript %}{% endblock extra_javascript %}
+  </body>
+</html>
+ 

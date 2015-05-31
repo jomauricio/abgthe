@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}{% load imagekit avatar_tags %}{% load taggit_extras %}
+
+{% block title %}Votação: {{ object.description }}{% endblock %}
+{% block extra_css %}
+<link href="{% static 'css/polls/poll_list.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %} 
+<div class="row">
+
+  <div class="col-sm-12 col-md-12">
+    <h2>Votação:</h2>
+    <div class="table-responsive">
+    <table class="table table-condense">
+    </thead>
+        <tr>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Usuário</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr><td><span class="poll_descripition">{{ object.description }}</span></td>
+      <td>{% if object.poll_type == 'purchasepoll' %}
+      <i class="fa fa-3x fa-money"></i>&nbsp;
+      {% else %}
+      <i class="fa fa-3x fa-list-ol"></i>&nbsp;
+      {% endif %}
+      {% if object.status == 'aberta' %}
+      <i class="fa fa-3x fa-unlock"></i>
+      {% else %}
+      <i class="fa fa-3x fa-lock"></i>
+      {% endif %}</td>
+      <td><img src="{% avatar_url object.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+    </tr>
+  </tbody> 
+  </table>
+  </div>
+  </div>
+</div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+    <ul class='list-unstyled  list-inline'>
+
+      {% if user_vote %}
+       <p class="user_accept">Seu voto:</p>
+       {% if user_vote.accept %}
+       <i class="fa fa-3x fa-thumbs-o-up accept"></i>
+       {% else %}
+        <i class="fa fa-3x fa-thumbs-o-down no-accept"></i> 
+       {% endif%}
+        {% if object.status == 'aberta' %}
+        <li>
+        <div class="accept_btn">
+          <a class="btn btn-primary" href="{% url 'polls:purchase_accept_update' object.pk user_vote.pk  %}"><i class="fa fa-refresh"></i>
+  &nbsp;Alterar Voto</a>
+        <a class="btn btn-danger" href="{% url 'polls:purchase_accept_delete' object.pk user_vote.pk %}"><i class="fa fa-trash-o"></i>&nbsp;Cancelar Voto</a>
+        </div>
+        </li>
+        {% endif %}
+      {% else %}
+        {% if object.status == 'aberta' %}
+        <li><span class="poll_user_create">Você não votou ainda.</span>&nbsp;<a class="btn btn-primary" href="{% url 'polls:purchase_accept_add' object.pk %}"><i class="fa fa-plus"></i>&nbsp;Votar</a>
+        </li>
+        {% endif %}
+      {% endif %}
+  </ul>
+<hr>
+
+<div class="col-sm-12 col-md-8">
+  <ul class='list-unstyled'>
+    {% if object.status == 'aberta' %}
+    <h4>Parcial da Votação:</h4>
+    {% else %}
+    <h4>Votação finalisada:</h4>
+    {% endif %}
+    <br>
+    {% for vote in object.poll_purchaseaccepts.all %}
+    <li>
+      <img src="{% avatar_url vote.create_user 60 %}" alt="Imagens do usuario" class="img-rounded">&nbsp;
+      <span class="poll_user_create">{{ object.create_user }}</span>&nbsp;
+       {% if vote.accept %}
+       <i class="fa fa-2x fa-thumbs-o-up accept"></i>
+       {% else %}
+        <i class="fa fa-2x fa-thumbs-o-down no-accept"></i> 
+       {% endif%}
+    </li>
+    {% empty %}
+      <li>Sem votos.</li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="col-sm-12 col-md-4">
+  <h3>Resultado: <h3>
+  {% if object.accept %}
+  <i class="fa fa-3x fa-check accept"></i>
+  {% else %}
+  <i class="fa fa-3x fa-times no-accept"></i> 
+  {% endif%}
+</div>  
+  </div>
+  </div>
+{% endblock content %}

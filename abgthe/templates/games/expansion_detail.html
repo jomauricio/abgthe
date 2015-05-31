@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}{% load imagekit %}{% load taggit_extras %}
+
+{% block title %}Expansão: {{ object.name }}{% endblock %}
+
+{% block content %} 
+<div class="row">
+
+  <div class="col-sm-12 col-md-12">
+    <h1>Expansão: {{ object.name }}</h1>
+  </div><br>
+  <div class="col-sm-12 col-md-1">
+      {% if object.image %}
+      <img src="{{object.image.url}}">
+      {% else %}
+      <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+      {% endif %}
+  </div>
+  {% get_taglist as tags for 'games' %}
+  <div class="col-sm-12 col-md-11">
+    <ul class='list-unstyled'>
+    <li>{{ object.description|safe }}</li>
+    <li>{{ object.number_players }}</li>
+    <li>
+      <ul class='list-unstyled'>
+      {% for tag in tags %}
+      <li>{{tag}}</li>
+      {% endfor %}
+      <ul>
+    </li>
+    </ul>
+  </div>
+</div>
+
+{% endblock content %}

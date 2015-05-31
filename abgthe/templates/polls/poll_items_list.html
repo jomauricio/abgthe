@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}{% load imagekit avatar_tags %}{% load taggit_extras %}
+{% block extra_css %}
+    <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/polls/poll_list.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block title %}Votação: {{ poll.description }} {% endblock %}
+
+{% block content %} 
+<div class="row">
+
+  <div class="col-sm-12 col-md-12">
+        <h2>Votação:</h2>
+    <div class="table-responsive">
+    <table class="table table-condense">
+    </thead>
+        <tr>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Usuário</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr><td><span class="poll_descripition">{{ poll.description }}</span></td>
+      <td>{% if poll.poll_type == 'purchasepoll' %}
+      <i class="fa fa-3x fa-money"></i>&nbsp;
+      {% else %}
+      <i class="fa fa-3x fa-list-ol"></i>&nbsp;
+      {% endif %}
+      {% if poll.status == 'aberta' %}
+      <i class="fa fa-3x fa-unlock"></i>
+      {% elif poll.status == 'ranqueamento' %}
+      <i class="fa fa-3x fa-sort-numeric-asc"></i>
+      {% else %}
+      <i class="fa fa-3x fa-lock"></i>
+      {% endif %}</td>
+      <td><img src="{% avatar_url poll.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+    </tr>
+  </tbody> 
+  </table>
+  </div>
+  </div>
+</div>
+  <hr>
+  
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      {% if user_item %} 
+      <p class="user_accept">Vc indicou o jogo:</p>
+        {% if user_item.game.image %}
+        <img src="{{user_item.game.image.url}}">
+        {% else %}
+        <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+        {% endif %}
+        &nbsp;<span class="poll_descripition">{{user_item.game.name}}</span>
+      {% else %}
+      <p class="user_accept">Vc NÃO indicou um jogo.</p>
+      {% endif%}
+<hr>
+  <p class="poll_user_create">Faça o ranqueamento dos jogos abaixo para submissão na lista Sextupla:</p><br>
+  <form method="post" action="{% url 'polls:poll_item_ranking' poll.pk %}">
+    {% csrf_token %}
+  <ul id="sortable" class="">
+  {% for item in object_list %}
+      <li><i class="fa fa-3x fa-arrows-v"></i>
+            {% if item.game.image %}
+            <img src="{{item.game.image.url}}">
+            {% else %}
+            <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+            {% endif %}
+            &nbsp;<span class="poll_descripition">{{item.game.name}}</span>
+          <img src="{% avatar_url item.create_user 60 %}" alt="Imagens do usuario" class="img-rounded">
+          <span class="ordem">{{forloop.counter}}</span>
+          <input type="hidden" required="" value="{{item.pk}}" name="itens[]">
+          <input class="rankig_order" type="hidden" required="" value="{{forloop.counter}}" name="rankings[]">
+      </li>
+  {% endfor %}
+</ul>
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn btn-primary">Submeter Lista</button>
+      </div>
+    </div>
+  </form>
+  </div>
+  </div>
+
+{% endblock content %}
+{% block extra_javascript %}
+  <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    $( "#sortable" ).on( "sortbeforestop", function( event, ui ) {
+          var jogos = $(".ordem");
+          var rankig_order = $(".rankig_order")
+          for(var pos = 0; pos < jogos.length; pos++) {
+          $(jogos[pos]).text((pos+1));
+          $(rankig_order[pos]).val($(jogos[pos]).text());
+          }
+        });
+  });
+  </script>
+{% endblock extra_javascript %}

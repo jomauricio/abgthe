@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load avatar_tags %}
+{% load static %}
+
+{% block title %}Usuario: {{ profile.user.username }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-sm-12 col-md-2">
+    <a href="{% url 'avatar_change' %}">{% avatar user 100 %}</a>
+  </div>
+  <div class="col-sm-12 col-md-8">
+    <h2>Usuario:{{ profile }}</h2>
+    <h2>Email:{{ profile.user.email }}</h2>
+  </div>
+  <div class="col-sm-12 col-md-2">
+    <a class="btn btn-primary" href="{% url 'profiles:profile_update' profile.username %}"><i class="fa fa-pencil"></i>&nbsp;Editar Perfil </a>
+    <a class="btn btn-primary" href="{% url 'account_email' %}"><i class="fa fa-envelope-o"></i>&nbsp;Mudar E-Mail</a>
+    <a class="btn btn-primary" href="{% url 'account_change_password' %}"><i class="fa fa-key"></i>&nbsp;Mudar Senha</a>
+  </div>
+</div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Dados do Perfil:</h3>
+      <lu class="list-unstyled">
+        <li>{{profile.description|safe}}</li>
+        <li>{{profile.birthday}}<li>
+        <li>{{profile.gender}}<li>
+        <li>{{profile.cep}}<li>
+        <li>{{profile.address}}<li>
+        <li>{{profile.cel_phone}}<li>
+        <li>{{profile.home_phone}}<li>
+        <li>{{profile.state}}<li>
+        <li>{{profile.city}}<li>
+      </lu>
+    </div>
+  </div>
+
+{% endblock content %}

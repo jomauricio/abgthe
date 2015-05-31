@@ -1,0 +1,67 @@
+{% extends "base.html" %}{% load pagination_tags avatar_tags %}
+{% load static %}{% load crispy_forms_tags %}
+{% block title %}Votações{% endblock %}
+{% block extra_css %}
+<link href="{% static 'css/polls/poll_list.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+{% block content %}
+{% autopaginate object_list 10 %} 
+<div class="row">
+
+  <div class="col-sm-12 col-md-9">
+    <h1>Votações</h1><br>
+    <div class="table-responsive">
+    <table class="table table-condense">
+    </thead>
+        <tr>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Usuário</th>
+      </tr>
+    </thead>
+    <tbody>
+  {% for poll in object_list %}
+    <tr><td><a href="{{ poll.get_absolute_url }}"><span class="poll_descripition">{{ poll.description }}</span></a></td>
+      <td>{% if poll.poll_type == 'purchasepoll' %}
+      <i class="fa fa-3x fa-money"></i>
+      {% else %}
+      <i class="fa fa-3x fa-list-ol"></i>
+      {% endif %}
+      {% if poll.status == 'aberta' %}
+      <i class="fa fa-3x fa-unlock"></i>
+      {% elif poll.status == 'ranqueamento' %}
+      <i class="fa fa-3x fa-sort-numeric-asc"></i>
+      {% else %}
+      <i class="fa fa-3x fa-lock"></i>
+      {% endif %}</td>
+      <td><img src="{% avatar_url poll.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+    </tr>
+  {% empty %}
+    <tr>Sem votação cadastrada.</tr>
+  {% endfor %}
+  </tbody> 
+  </table>
+  </div>
+  </div>
+  <div class="col-sm-12 col-md-3">
+  <a class="btn btn-primary" href="{% url 'polls:poll_sixlist_add' %}"><i class="fa fa-plus"></i>&nbsp;Criar Lista Sextupla Votação</a>
+  <a class="btn btn-primary" href="{% url 'polls:poll_purchase_add' %}"><i class="fa fa-plus"></i>&nbsp;Criar Votação para compras</a>
+  <br>
+  <h3>Legenda:</h3>
+  <p>
+    <ul class='list-unstyled'>
+    <li><i class="fa fa-2x fa-money"></i>&nbsp;Votação para Compra</li>
+    <li><i class="fa fa-2x fa-list-ol"></i>&nbsp;Votação para Lista Sextupla</li>
+    <li><i class="fa fa-2x fa-unlock"></i>&nbsp;Votação Aberta</li>
+    <li><i class="fa fa-2x fa-sort-numeric-asc"></i>&nbsp; Fase de ranqueamento</li>
+    <li><i class="fa fa-2x fa-lock"></i>&nbsp;Votação Finalizada</li>
+    <li><img class="img-rounded" src="http://placehold.it/30x30&amp;text=AVATAR">&nbsp;Avatar do usuario que criou a votação</li>
+    </ul>
+  </p>
+  </div>
+  <div class="col-sm-12 col-md-12">
+  {% paginate %}
+  </div>
+</div>
+
+{% endblock content %}

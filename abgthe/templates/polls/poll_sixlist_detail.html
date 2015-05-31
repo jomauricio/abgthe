@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}{% load imagekit avatar_tags %}{% load taggit_extras %}
+{% block extra_css %}
+    <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/polls/poll_list.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block title %}Votação: {{ object.description }}{% endblock %}
+
+{% block content %} 
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <h2>Votação:</h2>
+    <div class="table-responsive">
+    <table class="table table-condense">
+    </thead>
+        <tr>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Usuário</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr><td><span class="poll_descripition">{{ object.description }}</span></td>
+      <td>{% if object.poll_type == 'purchasepoll' %}
+      <i class="fa fa-3x fa-money"></i>&nbsp;
+      {% else %}
+      <i class="fa fa-3x fa-list-ol"></i>&nbsp;
+      {% endif %}
+      {% if poll.status == 'aberta' %}
+      <i class="fa fa-3x fa-unlock"></i>
+      {% elif poll.status == 'ranqueamento' %}
+      <i class="fa fa-3x fa-sort-numeric-asc"></i>
+      {% else %}
+      <i class="fa fa-3x fa-lock"></i>
+      {% endif %}</td>
+      <td><img src="{% avatar_url object.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+    </tr>
+  </tbody> 
+  </table>
+  </div>
+  </div>
+</div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+    <ul class='list-unstyled'>
+      {% if user_item %}
+      <li>
+       <p class="user_accept">Vc indicou o jogo:</p>
+        {% if user_item.game.image %}
+        <img src="{{user_item.game.image.url}}">
+        {% else %}
+        <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+        {% endif %}
+        &nbsp;<span class="poll_descripition">{{user_item.game.name}}</span>
+        </li>
+        {% if object.status == 'aberta' %}
+        <li><a class="btn btn-primary" href="{% url 'polls:sixlist_item_update' object.pk user_item.pk  %}"><i class="fa fa-refresh"></i>
+  &nbsp;Alterar Indicação</a>
+        <a class="btn btn-danger" href="{% url 'polls:sixlist_item_delete' object.pk user_item.pk %}"><i class="fa fa-trash-o"></i>&nbsp;Remover Indicação</a>
+        </li>
+        {% elif object.status == 'ranqueamento' %}
+        <li><a class="btn btn-primary" href="{% url 'polls:poll_items_list' object.pk %}"><i class="fa fa-list-ol"></i>&nbsp;Ranquear lista</a></li>
+        {% else %}
+            <li><p>A votação encerada verifique os 6 primeiros da lista</p></li>
+        {% endif %}
+      {% else %}
+        {% if object.status == 'aberta' %}
+        <li><a class="btn btn-primary" href="{% url 'polls:sixlist_item_add' object.pk %}"><i class="fa fa-plus"></i>&nbsp;Indicar um Jogo</a>
+        </li>
+        {% elif object.status == 'ranqueamento' %}
+            <li><a class="btn btn-primary" href="{% url 'polls:poll_items_list' object.pk %}"><i class="fa fa-list-ol"></i>&nbsp;Ranquear lista</a></li>
+        {% else %}
+          <li><p>A votação encerada verifique os 6 primeiros da lista</p></li>
+        {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+
+<hr>
+<h4>Indicações da Votação:</h4>
+
+  <div class="table-responsive">
+    <table class="table table-condense">
+  {% if object.status == 'aberta' %}
+    </thead>
+        <tr>
+        <th>Jogo</th>
+        <th>Usuário</th>
+      </tr>
+    </thead>
+     <tbody>
+    {% for item in itens %}
+        <tr>
+          <td>
+            {% if item.game.image %}
+            <img src="{{item.game.image.url}}">
+            {% else %}
+            <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+            {% endif %}
+            &nbsp;<span class="poll_descripition">{{item.game.name}}</span>
+          </td>
+          <td><img src="{% avatar_url item.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+        </tr>
+    {% empty %}
+      <tr>Sem indicações.</tr>
+    {% endfor %}
+      </tbody> 
+  {% else %}
+      </thead>
+        <tr>
+        <th>Jogo</th>
+        <th>Usuário</th>
+        <th>Parcial</th>
+      </tr>
+    </thead>
+     <tbody>
+    {% for item in itens %}
+        <tr>
+          <td>
+            {% if item.game.image %}
+            <img src="{{item.game.image.url}}">
+            {% else %}
+            <img src="http://placehold.it/80x90&amp;text=Sem imagem 80x90">
+            {% endif %}
+            &nbsp;<span class="poll_descripition">{{item.game.name}}</span>
+          </td>
+          <td><img src="{% avatar_url item.create_user 60 %}" alt="Imagens do usuario" class="img-rounded"></td>
+          <td><span class="parcial">{{item.parcial}}</span></td>
+        </tr>
+    {% empty %}
+      <tr>Sem indicações.</tr>
+    {% endfor %}
+      </tbody> 
+
+  {% endif %}
+      </table>
+    </div>
+
+{% endblock content %}

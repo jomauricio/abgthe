@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% load floppyforms %}
+{% load static %}
+{% block extra_css %}
+    <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+{% block title %}Usuario: {{ object }}{% endblock %}
+
+{% block content %}
+{{form.media}}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{% block header %}Usuario: {{ object }}{% endblock %}</h1><br>
+            <form id="user_form" class="form-horizontal" method="post" action="">
+                {% csrf_token %}
+                {{form}}
+                <div class="control-group">
+                <br>
+                  <div class="controls pull-right">
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% block extra_javascript %}
+<script type="text/javascript">
+    CKEDITOR.replace('id_description');
+</script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.ui.datepicker-pt-BR.js' %}"></script>
+<script>
+  $(function() {
+    $("#id_birthday").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showOn: "button",
+        buttonImage: "{% static 'images/calendario.gif' %}",
+        buttonImageOnly: true,
+        buttonText: "Selecione a data"
+    });
+  });
+</script>
+
+{% endblock extra_javascript %}
+
+{% endblock %}
