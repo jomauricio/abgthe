@@ -48,7 +48,7 @@ THIRD_PARTY_APPS = (
     'pagination',
     'imagekit',
     'floppyforms',
-    #'avatar',
+    'avatar',
 )
 
 # Apps specific for this project go here.

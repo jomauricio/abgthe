@@ -32,6 +32,7 @@ INSTALLED_APPS += ("djangosecure", )
 MIDDLEWARE_CLASSES = (
     # Make sure djangosecure.middleware.SecurityMiddleware is listed first
     'djangosecure.middleware.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 ) + MIDDLEWARE_CLASSES
 
 # set this to 60 seconds and then to 518400 when you can prove it works
@@ -43,6 +44,11 @@ SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_HTTPONLY = True
 SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+
+# DJANGO SYS CHECK WARNINGS - python manage.py check --deploy
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
+CSRF_COOKIE_HTTPONLY = env.bool("DJANGO_CSRF_COOKIE_HTTPONLY", default=True)
+X_FRAME_OPTIONS = env.bool("DJANGO_X_FRAME_OPTIONS", default='DENY')
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
