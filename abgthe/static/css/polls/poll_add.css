@@ -1,0 +1,23 @@
+#id_initial_date{
+	width: 150px;
+	margin-right: 7px;
+}
+
+#id_ranking_date{
+	width: 150px;
+	margin-right: 7px;
+}
+
+#id_final_date{
+	width: 150px;
+	margin-right: 7px;
+}
+
+#id_extraordinary{
+	width: 20px;
+	height: 20px;
+}
+
+.hasDatepicker {
+    display: inline;
+}

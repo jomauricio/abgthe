@@ -1,0 +1,29 @@
+.poll_descripition{
+	font-size: 18px;
+}
+
+.poll_user_create{
+	font-size: 20px;
+}
+
+.user_accept{
+	font-size: 20px;
+	display: inline;
+	padding-right: 20px;
+}
+
+.accept_btn{
+	margin-left: 20px;
+}
+
+.accept{
+	color:green;
+}
+
+.no-accept{
+	color:red; 
+}
+
+.parcial{
+	font-size: 40px;
+}

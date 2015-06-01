@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Django settings for Associação de Boardgames de Teresina-PI project.
 
@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import environ
+
+from django.utils.translation import ugettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path('abgthe')
@@ -30,7 +32,7 @@ DJANGO_APPS = (
 
     # Useful template tags:
     # 'django.contrib.humanize',
-
+    'bootstrap_admin',
     # Admin
     'django.contrib.admin',
 )

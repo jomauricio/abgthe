@@ -35,7 +35,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
 #        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
 #        'LOCATION': ''
 #    }
-3}
+#}
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------

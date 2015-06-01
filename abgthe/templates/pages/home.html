@@ -1,1 +1,34 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load staticfiles i18n %}
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Bem-vindo!</h1>
+        <p>Este é o site da Assossiação de Boardgames de Teresina - ABGTHE. Caro associado para ter acesso ao site registre-se no site ou faça login através do Facebook ou Google e entre em contato com o admin do site (Mauricio) para liberar o acesso.</p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'account_signup' %}" role="button">Registre-se</a>&nbsp;
+        <a class="btn btn-default btn-lg" href="{% url 'account_login' %}" role="button">{% trans "Log In" %}</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+        <img src="{% static 'images/home/dados.png' %}" alt="dados" class="img-rounded">        
+        </div>
+        <div class="col-md-4">
+          <h2><a href="http://migre.me/jc01N">BGamers</a></h2>
+          <p>Nosso grupo tem um site contendo um ranqueamento dos jogos com base em notas registradas pelos usuários. Vc também pode informar seus jogos e expansões e opinar sobre eles, informar seu desejo de tê-lo, cadastrar suas jogatinas, escrever resenhas, criar lista de jogos com propósito de abrir discussões ou apenas informar, entre outras coisas. Acesse <a href="http://migre.me/jc01N">BGamers</a> e registre-se. </p>
+        </div>
+        <div class="col-md-4">
+          <h2>Cadastro</h2>
+          <p>Caros assossiados vocês podem entrar no site através do Facebook ou do Google. Basta clicar no login e entrar com a conta que desejar.</p>
+          <p><a class="btn navbar-btn btn-default" href="{% url 'account_login' %}" role="button">{% trans "Log In" %}</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2015</p>
+      </footer>
+    </div>
+{% endblock content %}

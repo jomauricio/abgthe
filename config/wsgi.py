@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 WSGI config for Associação de Boardgames de Teresina-PI project.
 
